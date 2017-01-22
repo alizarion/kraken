@@ -1,0 +1,81 @@
+<div ui-layout class="layout-with-headers">
+    <div ui-layout-container >
+        <div ui-layout="{flow : 'column'}" >
+            <div ui-layout-container class=" html-back" >
+
+                <uib-tabset active="edit.active" style="height: 100%">
+
+                    <uib-tab  ng-repeat="compose in edit.currentProject.composes"
+                              index="$index"
+                              select="edit.refreshEditor()"
+                              heading="{{compose.name}}">
+                        <uib-tab-heading>
+                            {{compose.name}}   <i class="glyphicon glyphicon-remove-sign" ng-click="edit.removeCompose(compose,$event,$index)"></i>
+                        </uib-tab-heading>
+                        <ui-codemirror ui-codemirror-opts="edit.editorOptions"
+                                       ng-model="compose.$yaml">
+
+                        </ui-codemirror>
+
+                    </uib-tab>
+                    <uib-tab disable="false"
+                             index="10000"
+                             select="edit.addNewCompose($event)">
+                        <uib-tab-heading>
+                            <i class="fa fa-plus" ></i>
+                        </uib-tab-heading>
+
+                    </uib-tab>
+                </uib-tabset>
+
+
+
+
+            </div>
+            <div ui-layout-container class=" css-back" >
+                <kr-vis-network json-compose="edit.currentProject.getCompose()"
+                                options="edit.options"
+                                height="50%" >
+                </kr-vis-network>
+
+            </div>
+        </div>
+    </div>
+    <div ui-layout-container >
+
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+
+                <label  class="btn btn-primary btn-lg btn-block btn-file">
+                    Browse <input type="file" multiple accept=".yml"  kr-file-select get-file="edit.currentProject.loadAllLocally(files)" class="hidden">
+
+                </label>
+            </div>
+
+            <div class="btn-group" role="group">
+                <button type="button" ng-click="edit.currentProject.$save()" class="btn btn-default  btn-lg btn-block">Save</button>
+            </div>
+
+            <div class="btn-group" role="group">
+
+                <button   ng-click="edit.downloadYaml()" class="btn btn-success btn-lg btn-block ">
+                    Download
+
+                </button>
+            </div>
+            <a id="downloadAnchorElem{{$index}}"
+               ng-repeat="compose in edit.currentProject.composes"
+               href="data:text/yaml;charset=utf-8,{{compose.$yaml | encodeURI}}"
+               download="{{compose.name}}"
+               style="display:none"></a>
+        </div>
+
+        <ul class="list-group">
+            <li ng-repeat="log in edit.logService.history | orderBy:'date':true" class="list-group-item list-group-item-{{log.type}}">{{log.date | date:'medium'}} {{log.message}}</li>
+        </ul>
+
+    </div>
+
+</div>
+
+

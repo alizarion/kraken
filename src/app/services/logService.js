@@ -9,7 +9,8 @@ angular.module('kraken').service('LogService',[function(){
                 self.history.push(
                     {
                         type:'warning',
-                        message:warn
+                        message:warn,
+                        date:new Date()
                     }
                 );
             },
@@ -17,7 +18,8 @@ angular.module('kraken').service('LogService',[function(){
                 self.history.push(
                     {
                         type:'danger',
-                        message:error
+                        message:error,
+                        date:new Date()
                     }
                 );
             },
@@ -25,7 +27,8 @@ angular.module('kraken').service('LogService',[function(){
                 self.history.push(
                     {
                         type:'info',
-                        message:info
+                        message:info,
+                        date:new Date()
                     }
                 );
             },

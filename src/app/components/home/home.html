@@ -1,0 +1,36 @@
+
+
+<div  ui-view class="fill-height">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-4 col-md-4"  ng-repeat="project in home.projectService.getLoadedProjects()">
+                <div class="thumbnail" style="height: 230px">
+                    <div class="caption">
+                        <h2>{{project.name}}</h2>
+                        <ul style="height: 80px; overflow: hidden; text-overflow: ellipsis;">
+                            <li ng-repeat="compose in project.composes">
+                                {{compose.name}} :
+                                <b>services </b>
+                                <span ng-repeat="(key,value) in compose.json.services">{{key}}, </span>
+                            </li>
+                        </ul>
+                        <p>
+                            <a  class="btn btn-primary" ng-click="home.setCurrentProject(project)" role="button">Edit</a>
+                            <a  class="btn btn-danger" ng-click="project.$drop();home.projectService.refresh()" role="button">Drop</a>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 col-md-2 ">
+                <a  style="height: 230px;display: block;position: relative;"
+                    class="btn btn-default btn-sm"
+                    ng-click="home.createNewProject()"
+                    href="#">
+                    <i style="font-size: 60px;padding-top: 60px;" class="fa fa-plus fa-align-justify"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

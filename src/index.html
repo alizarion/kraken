@@ -6,6 +6,8 @@
 
     <!-- js dependencies-->
     <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+
     <script src="assets/js/extend-array.js"></script>
     <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
     <script src="../node_modules/vis/dist/vis-network.min.js"></script>
@@ -14,6 +16,8 @@
     <script src="../node_modules/codemirror/addon/lint/lint.js"></script>
     <script src="../node_modules/codemirror/addon/lint/yaml-lint.js"></script>
     <script src="../node_modules/codemirror/addon/hint/show-hint.js"></script>
+    <script src="../node_modules/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
+
     <script src="assets/js/docker-compose-hint.js"></script>
 
 
@@ -46,10 +50,17 @@
 
     <!-- app files -->
     <script src="app.module.js"></script>
+    <script src="app.config.js"></script>
+    <script src="app.route.js"></script>
+    <script src="app/components/edit/editCtrl.js"></script>
+        <script src="app/components/home/homeCtrl.js"></script>
+
     <script src="app/directives/krVisNetwork.js"></script>
 
     <script src="app/services/krFileSelect.js"></script>
     <script src="app/services/logService.js"></script>
+    <script src="app/services/projectService.js"></script>
+
     <script src="app/services/util.js"></script>
 
     <script src="app/filters/encodeUri.js"></script>
@@ -62,8 +73,6 @@
     <script src="app/services/localFileReader.js"></script>
 
 
-
-    <script src="app/components/main/mainCtrl.js"></script>
 
 
 </head>

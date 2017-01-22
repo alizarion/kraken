@@ -1,13 +1,24 @@
 /**
  * Main module
  */
-
-
-angular.module('kraken',['kraken.codemirror','ui.layout','ui.bootstrap'])
+angular.module('kraken',
+    [
+        'kraken.codemirror',
+        'ui.layout',
+        'ui.bootstrap',
+        'ui.router',
+        'ncy-angular-breadcrumb'
+    ]
+)
     .config( [
-        '$compileProvider',
-        function( $compileProvider )
+        '$compileProvider','$locationProvider',
+        function(
+            $compileProvider,$locationProvider
+        )
         {
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|data|mailto|chrome-extension):/);
+            $locationProvider.html5Mode(false);
+            $locationProvider.hashPrefix('');
+            $compileProvider
+                .aHrefSanitizationWhitelist(/^\s*(https?|data|mailto|chrome-extension):/);
         }
     ]);

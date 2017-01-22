@@ -1,2 +1,30 @@
 
 @import "visNetwork","codeMirrorEditor","tabs";
+
+
+$app-header-height : 37px;
+
+.main-container{
+  display: block;
+  padding-top:  $app-header-height;
+  height:100%;
+}
+
+html,body {
+  height: 100%;
+}
+
+
+.breadcrumb {
+  max-height: $app-header-height;
+  float: left;
+  width: 100%;
+}
+
+.fill-height {
+  height: 100% !important;
+}
+
+.layout-with-headers{
+  top:  $app-header-height;
+}
