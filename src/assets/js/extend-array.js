@@ -36,6 +36,31 @@ Object.defineProperty(Array.prototype, "pushUnique", {
     }
 });
 
+
+Object.defineProperty(Array.prototype, "arrayNodeIndexOf", {
+    enumerable: false,
+    value: function(obj) {
+        for (var i = 0; i < this.length; i++) {
+
+            if (this[i].id === obj.id) {
+                return i;
+            }
+
+
+        }
+        return -1;
+    }
+});
+
+Object.defineProperty(Array.prototype, "pushUniqueNode", {
+    enumerable: false,
+    value: function(item) {
+        if (this.arrayNodeIndexOf(item) < 0) {
+            this.push(item);
+        }
+    }
+});
+
 Object.defineProperty(Array.prototype, "concatUnique", {
     enumerable: false,
     value: function(items) {
