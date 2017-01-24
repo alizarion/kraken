@@ -15,57 +15,63 @@ angular
         var defaultNetwork = null;
 
         if(compose['networks']){
-            for (var n in compose['networks']){
-                var network = compose['networks'][n];
-                console.log(n,network);
+            if (typeof compose['networks'] === 'object' ){
+                for (var n in compose['networks']) {
 
-                if(!network){
+                    var network = compose['networks'][n];
+                    if (!network) {
 
-                    nodes.pushUniqueNode(
-                        {
-                            "id":'networks-'+n,
-                            "label":'networks : ' + n,
-                            "size":10,
-                            "color":"red",
-                            "shape":"icon",
-                            icon: {
-                                face: 'FontAwesome',
-                                code: '\uf0e8',
-                                size: 50,
-                                color: '#303336'
-                            },
-                            "shadow":true
-                        }
-                    )
-                }  else if(typeof  network === 'object'){
-
-                    if (network.external){
-                        if(network.external.name){
-                            defaultNetwork =   {
-                                "id":'networks-'+network.external.name,
-                                "label":'networks : ' + network.external.name,
-                                "size":10,
-                                "color":"red",
-                                "shape":"icon",
+                        nodes.pushUniqueNode(
+                            {
+                                "id": 'networks-' + n,
+                                "label": 'networks : ' + n,
+                                "size": 10,
+                                "color": "red",
+                                "shape": "icon",
                                 icon: {
                                     face: 'FontAwesome',
                                     code: '\uf0e8',
                                     size: 50,
                                     color: '#303336'
                                 },
-                                "shadow":true
-                            };
+                                "shadow": true
+                            }
+                        )
+                    } else if (typeof  network === 'object') {
 
-                            nodes.pushUnique(defaultNetwork);
+                        if (network.external) {
+                            if (network.external.name) {
+                                defaultNetwork = {
+                                    "id": 'networks-' + network.external.name,
+                                    "label": 'networks : ' + network.external.name,
+                                    "size": 10,
+                                    "color": "red",
+                                    "shape": "icon",
+                                    icon: {
+                                        face: 'FontAwesome',
+                                        code: '\uf0e8',
+                                        size: 50,
+                                        color: '#303336'
+                                    },
+                                    "shadow": true
+                                };
+
+                                nodes.pushUnique(defaultNetwork);
+
+                            }
 
                         }
 
                     }
-
                 }
 
+            }  else {
+                LogService.warn('expected an array of  networks, and simple string found')
             }
         }
+
+
+
         if(!defaultNetwork){
             nodes.pushUniqueNode(
                 {
@@ -106,58 +112,88 @@ angular
                     }
                 );
                 if (service['networks']){
-                    for (var n in service['networks']){
-                        if(service['networks'][n] === 'default' && defaultNetwork){
-                            edges.pushUniqueNode({
-                                id: 'services-' + s + '-to-' + 'networks-default',
-                                from: 'services-' + s,
-                                to: defaultNetwork.id
-                            })
-                        }  else {
+
+                    if(Array.isArray(service['networks']) || typeof service['networks'] == 'object'){
+                       for(var entry in service['networks']){
+
+                            var alias = null;
+                            var networkName = entry;
+                            var serviceNetworksEntry = service['networks'][networkName];
+                            // is configured service in network
+                            if(!Array.isArray(service['networks']) ){
+                                if(serviceNetworksEntry){
+                                    if(serviceNetworksEntry.aliases){
+                                        if(Array.isArray(serviceNetworksEntry.aliases)){
+                                            angular.forEach(serviceNetworksEntry.aliases ,function(a){
+                                                alias  =  (alias ? alias +', '+ (a ? a : '' ): 'aliases : ' + (a ? a : '' )) ;
+                                            })
+                                        }
 
 
-                            edges.pushUniqueNode({
-                                id:'services-'+s+'-to-'+'networks-'+ service['networks'][n],
-                                from: 'services-'+s,
-                                to : 'networks-'+ service['networks'][n]
-                            });
+                                    }
+                                }
+                                // simple networks name
+                            } else {
+                                 networkName = serviceNetworksEntry ?  serviceNetworksEntry : '';
+                            }
+                            if (networkName === 'default' && defaultNetwork) {
+                                edges.pushUniqueNode({
+                                    id: 'services-' + s + '-to-' + 'networks-default',
+                                    from: 'services-' + s,
+                                    label:alias ? alias : '',
+                                    to: defaultNetwork.id
+                                })
+                            } else {
 
-                            var serviceNode =  {
-                                "id":'networks-'+service['networks'][n],
-                                "label":'networks : ' + service['networks'][n],
-                                "size":10,
-                                "color":"blue",
-                                "shape":"icon",
-                                icon: {
-                                    face: 'FontAwesome',
-                                    code: '\uf0e8',
-                                    size: 50,
-                                    color: '#777'
-                                },
-                                "shadow":true
-                            };
+                                console.log(alias);
+                                edges.pushUniqueNode({
+                                    id: 'services-' + s + '-to-' + 'networks-' + networkName,
+                                    from: 'services-' + s,
+                                    label: alias ? alias : '',
+                                    to: 'networks-' + networkName
+                                });
 
-                            if(nodes.arrayNodeIndexOf(serviceNode) < 0)
-                                nodes.pushUniqueNode(
-                                    {
-                                        "id":'networks-'+service['networks'][n],
-                                        "label":'networks : ' + service['networks'][n],
-                                        "size":10,
-                                        "color":"blue",
-                                        "shape":"icon",
-                                        icon: {
-                                            face: 'FontAwesome',
-                                            code: '\uf0e8',
-                                            size: 50,
-                                            color: '#777'
-                                        },
-                                        "shadow":true
-                                    });
-                            LogService.warn('service ' + s + ' linked with  unknown network : '+service['networks'][n] +'')
+                                var serviceNode = {
+                                    "id": 'networks-' + networkName,
+                                    "label": 'networks : ' + networkName,
+                                    "size": 10,
+                                    "color": "blue",
+                                    "shape": "icon",
+                                    icon: {
+                                        face: 'FontAwesome',
+                                        code: '\uf0e8',
+                                        size: 50,
+                                        color: '#777'
+                                    },
+                                    "shadow": true
+                                };
+
+                                // adding unique node,
+                                if (nodes.arrayNodeIndexOf(serviceNode) < 0)
+                                    nodes.pushUniqueNode(
+                                        {
+                                            "id": 'networks-' + networkName,
+                                            "label": 'networks : ' + networkName,
+                                            "size": 10,
+                                            "color": "blue",
+                                            "shape": "icon",
+                                            icon: {
+                                                face: 'FontAwesome',
+                                                code: '\uf0e8',
+                                                size: 50,
+                                                color: '#777'
+                                            },
+                                            "shadow": true
+                                        });
+                                LogService.warn('service ' + s + ' linked with  unknown network : ' + networkName + '')
+                            }
                         }
+                    } else {
+                        LogService.warn('expected an array of services networks, simple string found')
                     }
 
                 } else {
+                    // default networks has custom name
                     if (defaultNetwork) {
 
                         edges.pushUniqueNode({
@@ -166,7 +202,7 @@ angular
                             to: defaultNetwork.id
                         })
                     } else {
-
+                        // no default networks then link service to default network
                         edges.pushUniqueNode({
                             id: 'services-' + s + '-to-' + 'networks-default',
                             from: 'services-' + s,

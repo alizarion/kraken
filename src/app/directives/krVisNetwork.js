@@ -97,7 +97,6 @@ angular
 
                         self.data.nodes.forEach(function(node){
                             if(!dataSetNodes.get(node.id)) {
-                                console.log('remove'+node.id);
                                 self.data.nodes.remove(node.id)
                             }
 
@@ -105,7 +104,6 @@ angular
 
                         self.data.edges.forEach(function(edge){
                             if(!dataSetEdges.get(edge.id)) {
-                                console.log('remove'+edge.id);
                                 self.data.edges.remove(edge.id)
                             }
                         });
@@ -114,7 +112,6 @@ angular
                         self.data.edges.update(newData.edges)
 
                     } else {
-                        console.log('init netword')
                         self.data = {
                             nodes: dataSetNodes,
                             edges: dataSetEdges
