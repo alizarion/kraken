@@ -7,7 +7,6 @@
     <!-- js dependencies-->
     <script src="../node_modules/angular/angular.min.js"></script>
     <script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-
     <script src="assets/js/extend-array.js"></script>
     <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
     <script src="../node_modules/vis/dist/vis-network.min.js"></script>
@@ -17,10 +16,7 @@
     <script src="../node_modules/codemirror/addon/lint/yaml-lint.js"></script>
     <script src="../node_modules/codemirror/addon/hint/show-hint.js"></script>
     <script src="../node_modules/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
-
     <script src="assets/js/docker-compose-hint.js"></script>
-
-
     <script src="app/directives/krCodemirror.js"></script>
     <script src="../node_modules/codemirror/keymap/sublime.js"></script>
     <script src="../node_modules/codemirror/mode/yaml/yaml.js"></script>
@@ -49,9 +45,9 @@
 
 
     <!-- app files -->
-    <script src="app.module.js"></script>
-    <script src="app.config.js"></script>
-    <script src="app.route.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <script src="app/app.route.js"></script>
     <script src="app/components/edit/editCtrl.js"></script>
         <script src="app/components/home/homeCtrl.js"></script>
 
@@ -78,7 +74,7 @@
 </head>
 <body ng-app="kraken">
 
-<ng-include src="'app.template.html'"></ng-include>
+<ng-include src="'app/app.template.html'"></ng-include>
 
 </body>
 </html>
