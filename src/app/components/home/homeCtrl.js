@@ -23,6 +23,16 @@ angular
                 $state.transitionTo('home.edit');
             } ;
 
+            self.updateProjectName = function(project,event){
+
+                var newName = prompt("Please enter the new name of you project", project.name);
+                if(newName){
+                    project.name =  newName;
+                    project.$save();
+                }
+                event.preventDefault();
+            };
+
 
             self.createNewProject = function () {
                 var modalInstance = $uibModal.open({

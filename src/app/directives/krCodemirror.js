@@ -53,9 +53,7 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
 
         // Allow access to the CodeMirror instance through a broadcasted event
         // eg: $broadcast('CodeMirror', function(cm){...});
-        console.log('dsqds')
         scope.$on('CodeMirror', function(event, callback) {
-            console.log('fsdf')
             if (angular.isFunction(callback)) {
                 callback(codemirror);
             } else {

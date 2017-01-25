@@ -12,7 +12,6 @@ angular
             el.bind("change", function(e){
 
                 var file = (e.srcElement || e.target).files;
-                console.log(file);
                 $scope.getFile({files : file});
             })
 

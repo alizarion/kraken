@@ -27,7 +27,6 @@ angular.module('kraken')
                     if(options.composes){
                         angular.forEach(options.composes,function(compose){
                             self.composes.push(new Compose(compose));
-                            console.log('compose reloaded');
 
                         })
                     }
@@ -139,7 +138,6 @@ angular.module('kraken')
                         projects = angular.fromJson(savedProject);
                     }
                     var projectPosition = _Project.$getById(this.id);
-                    console.log('drop', projectPosition)
                     if(projectPosition.position>=0){
                         projects.splice(projectPosition.position,1);
                     }

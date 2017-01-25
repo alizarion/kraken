@@ -19,6 +19,10 @@ angular
             self.currentProject = ProjectService.getCurrentProject() || new Project();
             self.active = 0;
             //self code mirror after first rendering
+            self.options = {
+                displayLinks:true
+            };
+
 
             self.refreshEditor = function(){
                 $timeout(function(){
@@ -29,15 +33,31 @@ angular
             };
 
             self.removeCompose = function(compose,event,index){
-                console.log(event)
                 var index = self.currentProject.composes.indexOf(compose);
-                console.log(index)
                 if(index >= 0){
                     self.currentProject.composes.splice(index,1);
 
                     self.currentProject.getCompose();
                 }
                 self.active = index-1 >= 0?  index-1 : 0;
+                self.refreshEditor();
+                event.preventDefault();
+            };
+
+            self.changeName = function(compose,event){
+
+                var newName = prompt("Please the new name of your compose file", compose.name);
+                if(newName){
+                    angular.forEach(self.currentProject.composes,function(c){
+                        if(c.name === compose.name){
+                            if(newName.indexOf('.yml')<0){
+                                newName = newName + '.yml';
+                            }
+                            c.name = newName + '';
+                        }
+                    });
+                    self.currentProject.$save();
+                }
                 self.refreshEditor();
                 event.preventDefault();
             };
@@ -69,17 +89,14 @@ angular
                 var i = 0;
                 var elems = [];
                 angular.forEach(self.currentProject.composes,function(){
-                    console.log('downloadAnchorElem'+i);
-                    /* var el = angular.element();
-                     console.log(el)*/
+
                     elems.push(document.getElementById('downloadAnchorElem'+i));
                     i++
                 });
                 setTimeout(function(){
-                    console.log(elems);
-                   for(var element in elems){
-                       elems[element].click();
-                   }
+                    for(var element in elems){
+                        elems[element].click();
+                    }
                 },200);
 
             };
@@ -99,7 +116,6 @@ angular
                 indentWithTabs :false,
                 commands :  {
                     save :function(){
-                        console.log('dsave')
                     }
                 }
 

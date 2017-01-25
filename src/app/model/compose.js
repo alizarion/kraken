@@ -6,7 +6,6 @@ angular.module('kraken').factory('Compose',[
         _Compose.prototype.$reloadFromYaml  = function(){
 
             if (this.$yaml){
-                console.log(this.$yaml);
                 this.json = jsyaml.safeLoad(this.$yaml);
 
             }
