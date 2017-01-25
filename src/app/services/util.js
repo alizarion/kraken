@@ -2,6 +2,8 @@ angular
     .module('kraken').service('util',['LogService',function(LogService){
 
 
+    var NETWORK_LABEL = 'network : ';
+    var SERVICE_LABEL = 'service : ';
 
 
     function _getNetworkModel(compose){
@@ -24,7 +26,7 @@ angular
                         nodes.pushUniqueNode(
                             {
                                 "id": 'networks-' + n,
-                                "label": 'networks : ' + n,
+                                "label": NETWORK_LABEL + n,
                                 "size": 10,
                                 "color": "red",
                                 "shape": "icon",
@@ -76,7 +78,7 @@ angular
             nodes.pushUniqueNode(
                 {
                     "id":'networks-default',
-                    "label":'network : default',
+                    "label":NETWORK_LABEL + 'default',
                     "size":10,
                     "color":"red",
                     "shape":"icon",
@@ -91,22 +93,25 @@ angular
             );
         }
 
-        var composeServices = null;
+        var composeService;
+
         if(compose['services']){
-            composeServices = compose['services'];
+            composeService =  compose['services'];
         } else {
-            composeServices = compose;
+            composeService = compose;
         }
 
-        for (var s in composeServices){
-            var service = composeServices[s];
+        console.log(composeService) ;
+
+        for (var s in composeService){
+            var service = composeService[s];
             if(service){
 
 
                 nodes.pushUniqueNode(
                     {
                         "id":'services-'+s,
-                        "label": 'service :' +s,
+                        "label": SERVICE_LABEL +s,
                         "size":10,
                         icon: {
                             face: 'FontAwesome',
@@ -120,14 +125,14 @@ angular
                 );
                 if (service['networks']){
 
-                    if(Array.isArray(composeServices) || typeof composeServices == 'object'){
-                        for(var entry in composeServices){
+                    if(Array.isArray(service['networks']) || typeof service['networks'] == 'object'){
+                       for(var entry in service['networks']){
 
                             var alias = null;
                             var networkName = entry;
-                            var serviceNetworksEntry = composeServices[networkName];
+                            var serviceNetworksEntry = service['networks'][networkName];
                             // is configured service in network
-                            if(!Array.isArray(composeServices) ){
+                            if(!Array.isArray(service['networks']) ){
                                 if(serviceNetworksEntry){
                                     if(serviceNetworksEntry.aliases){
                                         if(Array.isArray(serviceNetworksEntry.aliases)){
@@ -141,7 +146,7 @@ angular
                                 }
                                 // simple networks name
                             } else {
-                                networkName = serviceNetworksEntry ?  serviceNetworksEntry : '';
+                                 networkName = serviceNetworksEntry ?  serviceNetworksEntry : '';
                             }
                             if (networkName === 'default' && defaultNetwork) {
                                 edges.pushUniqueNode({
@@ -152,6 +157,7 @@ angular
                                 })
                             } else {
 
+                                console.log(alias);
                                 edges.pushUniqueNode({
                                     id: 'services-' + s + '-to-' + 'networks-' + networkName,
                                     from: 'services-' + s,
@@ -161,7 +167,7 @@ angular
 
                                 var serviceNode = {
                                     "id": 'networks-' + networkName,
-                                    "label": 'networks : ' + networkName,
+                                    "label": NETWORK_LABEL + networkName,
                                     "size": 10,
                                     "color": "blue",
                                     "shape": "icon",
@@ -179,7 +185,7 @@ angular
                                     nodes.pushUniqueNode(
                                         {
                                             "id": 'networks-' + networkName,
-                                            "label": 'networks : ' + networkName,
+                                            "label": NETWORK_LABEL + networkName,
                                             "size": 10,
                                             "color": "blue",
                                             "shape": "icon",
