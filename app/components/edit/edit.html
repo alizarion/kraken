@@ -10,7 +10,10 @@
                               select="edit.refreshEditor()"
                               heading="{{compose.name}}">
                         <uib-tab-heading>
-                            {{compose.name}}   <i class="glyphicon glyphicon-remove-sign" ng-click="edit.removeCompose(compose,$event,$index)"></i>
+                            {{compose.name}}
+                            <i class="glyphicon glyphicon glyphicon-pencil" ng-click="edit.changeName(compose,$event,$index)"></i>
+
+                            <i class="glyphicon glyphicon-remove-sign" ng-click="edit.removeCompose(compose,$event,$index)"></i>
                         </uib-tab-heading>
                         <ui-codemirror ui-codemirror-opts="edit.editorOptions"
                                        ng-model="compose.$yaml">
@@ -32,10 +35,14 @@
 
 
             </div>
-            <div ui-layout-container class=" css-back" >
+            <div ui-layout-container class="css-back" >
+                <a href="" style="position: absolute;z-index:99;"
+                   ng-click=" edit.options.displayLinks = !edit.options.displayLinks">
+                    Display links between services ? {{edit.options.displayLinks}}
+                </a>
                 <kr-vis-network json-compose="edit.currentProject.getCompose()"
                                 options="edit.options"
-                                height="50%" >
+                                height="100%" >
                 </kr-vis-network>
 
             </div>
