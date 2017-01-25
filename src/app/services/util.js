@@ -91,8 +91,15 @@ angular
             );
         }
 
-        for (var s in compose['services']){
-            var service = compose['services'][s];
+        var composeServices = null;
+        if(compose['services']){
+            composeServices = compose['services'];
+        } else {
+            composeServices = compose;
+        }
+
+        for (var s in composeServices){
+            var service = composeServices[s];
             if(service){
 
 
@@ -113,14 +120,14 @@ angular
                 );
                 if (service['networks']){
 
-                    if(Array.isArray(service['networks']) || typeof service['networks'] == 'object'){
-                       for(var entry in service['networks']){
+                    if(Array.isArray(composeServices) || typeof composeServices == 'object'){
+                        for(var entry in composeServices){
 
                             var alias = null;
                             var networkName = entry;
-                            var serviceNetworksEntry = service['networks'][networkName];
+                            var serviceNetworksEntry = composeServices[networkName];
                             // is configured service in network
-                            if(!Array.isArray(service['networks']) ){
+                            if(!Array.isArray(composeServices) ){
                                 if(serviceNetworksEntry){
                                     if(serviceNetworksEntry.aliases){
                                         if(Array.isArray(serviceNetworksEntry.aliases)){
@@ -134,7 +141,7 @@ angular
                                 }
                                 // simple networks name
                             } else {
-                                 networkName = serviceNetworksEntry ?  serviceNetworksEntry : '';
+                                networkName = serviceNetworksEntry ?  serviceNetworksEntry : '';
                             }
                             if (networkName === 'default' && defaultNetwork) {
                                 edges.pushUniqueNode({
@@ -145,7 +152,6 @@ angular
                                 })
                             } else {
 
-                                console.log(alias);
                                 edges.pushUniqueNode({
                                     id: 'services-' + s + '-to-' + 'networks-' + networkName,
                                     from: 'services-' + s,
