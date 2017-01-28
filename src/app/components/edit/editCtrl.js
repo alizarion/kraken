@@ -20,7 +20,8 @@ angular
             self.active = 0;
             //self code mirror after first rendering
             self.options = {
-                displayLinks:true
+                displayLinks:true,
+                displayDependsOn :true
             };
 
 

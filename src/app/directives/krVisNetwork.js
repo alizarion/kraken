@@ -15,6 +15,8 @@ angular
                 scope: {
                     options: '=',
                     jsonCompose :'=',
+                    composes: '=',
+                    project: '=',
                     events: '='
                 },
                 link: function (scope, element, attr) {
@@ -89,7 +91,7 @@ angular
                         // If we've actually changed the data set, then recreate the graph
                         // We can always update the data by adding more data to the existing data set
                         var newData =
-                            util.composeToVis(scope.jsonCompose,scope.options
+                            util.composeToVis(scope.composes,scope.options
                             );
 
                         var dataSetNodes = new vis.DataSet(newData.nodes);
@@ -143,6 +145,9 @@ angular
                         _refrehsVis();
                     });
                     scope.$watch('options.displayLinks', function () {
+                        _refrehsVis();
+                    });
+                    scope.$watch('options.displayDependsOn', function () {
                         _refrehsVis();
                     });
 

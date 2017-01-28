@@ -54,17 +54,6 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-/**
- * Compile les fichier scss en css et les dépose dans le répertoire /src/assets/css
- */
-gulp.task('sass', function(done) {
-    gulp.src('./src/assets/scss/**/*.scss')
-        .pipe(sass({
-            errLogToConsole: true
-        }))
-        .pipe(gulp.dest('./src/assets/css')).on('end', done);;
-
-});
 
 gulp.task('css', function(done) {
     gulp.src(buildConfig.cssDependencies
