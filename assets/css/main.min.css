@@ -7475,6 +7475,11 @@ span.CodeMirror-selectedtext { background: none; }
 .nav-tabs > li {
   float: none; }
 
+.github-issues {
+  top: 5px;
+  right: 10px;
+  position: absolute; }
+
 .main-container {
   display: block;
   padding-top: 37px;
