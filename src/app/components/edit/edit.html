@@ -40,10 +40,14 @@
                    ng-click=" edit.options.displayLinks = !edit.options.displayLinks">
                     Display links between services ? {{edit.options.displayLinks}}
                 </a>
-                <a href="" style="position: absolute;z-index:99;top :20px"
+                <a href="" style="position: absolute;z-index:99;top :15px"
                    ng-click=" edit.options.displayDependsOn = !edit.options.displayDependsOn">
                     Display depends on relations ? {{edit.options.displayDependsOn}}
                 </a>
+                <a href="" style="position: absolute;z-index:99;top :30px"
+                                ng-click=" edit.options.displayVolumes = !edit.options.displayVolumes">
+                                 Display volumes ? {{edit.options.displayVolumes}}
+                             </a>
                 <kr-vis-network json-compose="edit.currentProject.getCompose()"
                                 composes="edit.currentProject.composes"
                                 options="edit.options"

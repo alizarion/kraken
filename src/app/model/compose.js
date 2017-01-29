@@ -21,8 +21,9 @@ angular.module('kraken').factory('Compose',[
         function _Compose(options){
             var self =this;
 
-            options.color = '#'+Math.floor(Math.random()*16777215).toString(16);
             if(options){
+                options.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+
                 if(!options.name) options.name = 'initial-default-docker-compose.yml';
                 if(!options.json) { options.json = {
                     version:2,
@@ -38,6 +39,7 @@ angular.module('kraken').factory('Compose',[
            else {
                 options = {
                     name: 'initial-default-docker-compose.yml',
+                    color:'#'+Math.floor(Math.random()*16777215).toString(16),
                     json:{
                         version:2,
                         services:{

@@ -56,10 +56,30 @@ angular
         }
     }
 
+    function _addVolume(name,path,color){
+        return {
+            id: 'volume-'+name,
+            label:name,
+            color: color
+        }
+
+    }
+
+    function _linkToVolume(service,volume,path){
+        return {
+            id: 'service-' + service + '-to-volume-' + volume,
+            from: 'service-' + service,
+            label: path ? path : '',
+            dashes: [2, 4],
+            to: 'volume-' + volume
+        }
+    }
+
     function _getNetworkModel(composes,options){
 
         var nodes = [];
         var edges = [];
+
 
         for(var composePos in composes){
             var defaultNetwork = null;
@@ -98,6 +118,42 @@ angular
                 }  else {
                     LogService.warn('expected an array of  networks, and simple string found')
                 }
+            }
+
+            var externalVolumes = {};
+            if(options){
+                if(options.displayVolumes) {
+                    if(compose['volumes']){
+                        var volumes = compose['volumes'];
+                        if(Array.isArray(volumes)){
+
+                        } else {
+
+                            for(var v in volumes){
+                                var volumeSetted = false;
+                                var volume = volumes[v];
+                                if(volumes[v]){
+                                    if(volume.external){
+                                        if(volume.external.name){
+                                            nodes.pushUniqueNode(_addVolume(volume.external.name,compose.color));
+                                            externalVolumes[v]= volume.external.name;
+                                            volumeSetted = true;
+
+                                        }
+                                    }
+                                }
+
+                                if(!volumeSetted){
+                                    nodes.pushUniqueNode(_addVolume(v,compose.color));
+
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+
             }
 
 
@@ -217,6 +273,27 @@ angular
                                 )
                             }
 
+                        }
+                    }
+
+                    if(options){
+                        if(options.displayVolumes) {
+                            if(service['volumes']){
+                                var volumes = service['volumes'];
+                                if(Array.isArray(volumes)){
+                                    for(var v in volumes){
+                                        var volume =volumes[v].split(':');
+                                        if(externalVolumes[volume[0]]){
+                                            nodes.pushUniqueNode(_addVolume(externalVolumes[volume[0]],volume[1]))
+                                            edges.pushUniqueNode(_linkToVolume(s,externalVolumes[volume[0]],volume[1]))
+                                        } else {
+                                            nodes.pushUniqueNode(_addVolume(volume[0],volume[1]))
+                                            edges.pushUniqueNode(_linkToVolume(s,volume[0],volume[1]))
+                                        }
+                                    }
+                                }
+
+                            }
                         }
                     }
                     if(options){

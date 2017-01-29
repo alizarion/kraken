@@ -150,6 +150,9 @@ angular
                     scope.$watch('options.displayDependsOn', function () {
                         _refrehsVis();
                     });
+                    scope.$watch('options.displayVolumes', function () {
+                        _refrehsVis();
+                    });
 
 
                 }

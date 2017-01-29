@@ -21,7 +21,8 @@ angular
             //self code mirror after first rendering
             self.options = {
                 displayLinks:true,
-                displayDependsOn :true
+                displayDependsOn :true,
+                displayVolumes :true
             };
 
 
