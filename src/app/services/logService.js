@@ -1,4 +1,4 @@
-angular.module('kraken').service('LogService',[function(){
+angular.module('classifier').service('LogService',[function(){
 
         var self =  this;
         self.history = [];

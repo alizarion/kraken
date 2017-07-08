@@ -1,13 +1,16 @@
 /**
  * Main module
  */
-angular.module('kraken',
+angular.module('classifier',
     [
-        'kraken.codemirror',
         'ui.layout',
         'ui.bootstrap',
         'ui.router',
-        'ncy-angular-breadcrumb'
+        'ncy-angular-breadcrumb',
+        'ngResource',
+        'wu.masonry',
+        'angularFileUpload',
+        'ngWebSocket'
     ]
 )
     .config( [

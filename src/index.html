@@ -2,25 +2,67 @@
 <html lang="en" >
 <head>
     <meta charset="UTF-8">
-    <title>Release the Kraken !!!</title>
+    <title>Release the classifier !!!</title>
 
     <!-- js dependencies-->
+
+    <script src="../node_modules/angular-masonry/node_modules/jquery-bridget/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/angular-masonry/node_modules/jquery-bridget/jquery-bridget.js"></script>
+    <script src="../node_modules/angular-masonry/node_modules/imagesloaded/imagesloaded.pkgd.js"></script>
+    <script src="../node_modules/tracking/build/tracking.js"></script>
+    <script src="../node_modules/tracking/build/data/face-min.js"></script>
+
+    <script src="../node_modules/angular-masonry/node_modules/masonry-layout/dist/masonry.pkgd.js"></script>
+
     <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/angular-masonry/angular-masonry.js"></script>
+    <script src="../node_modules/angular-websocket/dist/angular-websocket.min.js"></script>
+
     <script src="../node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="assets/js/extend-array.js"></script>
-    <script src="../node_modules/js-yaml/dist/js-yaml.min.js"></script>
-    <script src="../node_modules/vis/dist/vis-network.min.js"></script>
     <script src="../node_modules/angular-ui-layout/src/ui-layout.js"></script>
-    <script src="../node_modules/codemirror/lib/codemirror.js"></script>
-    <script src="../node_modules/codemirror/addon/lint/lint.js"></script>
-    <script src="../node_modules/codemirror/addon/lint/yaml-lint.js"></script>
-    <script src="../node_modules/codemirror/addon/hint/show-hint.js"></script>
+   <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/EventEmitter/5.2.1/EventEmitter.min.js"></script>
+
+    <script src="../node_modules/get-size/get-size.js"></script>
+
+    <script src="../node_modules/angular-masonry/node_modules/imagesloaded/imagesloaded.js"></script>
+
+    <script src="../node_modules/angular-masonry/node_modules/masonry-layout/node_modules/outlayer/item.js"></script>
+    <script src="../node_modules/angular-masonry/node_modules/masonry-layout/node_modules/outlayer/outlayer.js"></script>
+
+    <script src="../node_modules/angular-masonry/node_modules/jquery-bridget/jquery-bridget.js"></script>
+    <script src="../node_modules/angular-masonry/node_modules/masonry-layout/masonry.js"></script>-->
+    <!--<script src="../node_modules/angular-masonry/node_modules/imagesloaded/node_modules/ev-emitter/ev-emitter.js"></script>
+
+    <script src="http://passy.github.io/angular-masonry/bower_components/jquery/dist/jquery.js"></script>
+    <script src="http://passy.github.io/angular-masonry/bower_components/get-style-property/get-style-property.js"></script>
+    <script src="http://passy.github.io/angular-masonry/bower_components/get-size/get-size.js"></script>
+    <script src="http://passy.github.io/angular-masonry/bower_components/doc-ready/doc-ready.js"></script>
+&lt;!&ndash;
+    <script src="http://passy.github.io/angular-masonry/bower_components/imagesloaded/imagesloaded.js"></script>
+&ndash;&gt;
+    <script src="../node_modules/angular-masonry/node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
+
+
+    <script src="http://passy.github.io/angular-masonry/bower_components/matches-selector/matches-selector.js"></script>
+    <script src="http://passy.github.io/angular-masonry/bower_components/outlayer/outlayer.js"></script>
+    <script src="http://passy.github.io/angular-masonry/bower_components/masonry/masonry.js"></script>-->
+
+<!--
+    <script src="../node_modules/angular-masonry/node_modules/jquery-bridget/jquery-bridget.js"></script>
+-->
+
+<!--
+    <script src="../node_modules/angular-masonry/node_modules/imagesloaded/imagesloaded.js"></script>
+-->
+
+
     <script src="../node_modules/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
-    <script src="assets/js/docker-compose-hint.js"></script>
-    <script src="app/directives/krCodemirror.js"></script>
-    <script src="../node_modules/codemirror/keymap/sublime.js"></script>
-    <script src="../node_modules/codemirror/mode/yaml/yaml.js"></script>
+
     <script src="../node_modules/angular-ui-layout/src/ui-layout.js"></script>
+    <script src="../node_modules/angular-resource/angular-resource.min.js"></script>
+    <script src="../node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
+
     <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
     <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 
@@ -28,20 +70,16 @@
 
     <!-- css dependencies -->
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../node_modules/codemirror/addon/lint/lint.css"/>
-    <link rel="stylesheet" href="../node_modules/codemirror/addon/hint/show-hint.css"/>
+
     <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="../node_modules/vis/dist/vis-network.min.css"/>
     <link rel="stylesheet" href="../node_modules/angular-ui-layout/src/ui-layout.css"/>
-    <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css"/>
-    <link rel="stylesheet" href="../node_modules/codemirror/theme/dracula.css"/>
     <link rel="stylesheet" href="../node_modules/angular-ui-layout/src/ui-layout.css"/>
 
 
 
 
     <!-- css files-->
-    <link rel="stylesheet" href="assets/css/kraken.css"/>
+    <link rel="stylesheet" href="assets/css/classifier.css"/>
 
 
     <!-- app files -->
@@ -49,20 +87,19 @@
     <script src="app/app.config.js"></script>
     <script src="app/app.route.js"></script>
     <script src="app/components/edit/editCtrl.js"></script>
-        <script src="app/components/home/homeCtrl.js"></script>
+    <script src="app/components/edit/ngThumb.js"></script>
 
-    <script src="app/directives/krVisNetwork.js"></script>
+    <script src="app/components/home/homeCtrl.js"></script>
 
-    <script src="app/services/krFileSelect.js"></script>
+
     <script src="app/services/logService.js"></script>
-    <script src="app/services/projectService.js"></script>
+    <script src="app/services/classifierRessouce.js"></script>
+    <script src="app/services/labelResource.js"></script>
 
-    <script src="app/services/util.js"></script>
+
 
     <script src="app/filters/encodeUri.js"></script>
 
-    <script src="app/model/compose.js"></script>
-    <script src="app/model/project.js"></script>
 
 
 
@@ -72,7 +109,7 @@
 
 
 </head>
-<body ng-app="kraken">
+<body ng-app="classifier">
 
 <ng-include src="'app/app.template.html'"></ng-include>
 

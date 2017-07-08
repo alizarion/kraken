@@ -1,4 +1,4 @@
-angular.module('kraken').config(
+angular.module('classifier').config(
     [
         '$stateProvider',
         '$urlRouterProvider',
@@ -22,7 +22,7 @@ angular.module('kraken').config(
 
                 .state({
                     name :'home.edit',
-                    url: '/edit',
+                    url: '/edit/:id',
                     templateUrl: 'app/components/edit/edit.html',
                     controller: 'EditCtrl',
                     controllerAs: 'edit',

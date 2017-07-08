@@ -23,7 +23,7 @@ var buildConfig = require('./build.config.js');
 gulp.task('build', function(callback) {
     runSequence('clean','sass',
         'css',
-        ['uglify','vendor','html','fonts','vis'],'assets',
+        ['uglify','vendor','html','fonts'],'assets',
         callback);
 
 
@@ -91,14 +91,6 @@ gulp.task('vendor', function() {
         .pipe(gulp.dest('dist/assets/lib'));
 });
 
-/**
- * Concat et Minifie le Javascript des librairies utilisés
- * et les déplace
- */
-gulp.task('vis', function() {
-    return gulp.src('node_modules/vis/dist/img/network/**/*')
-        .pipe(gulp.dest('dist/assets/css/img/network/'));
-});
 
 
 
