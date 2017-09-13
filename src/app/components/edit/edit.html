@@ -1,162 +1,97 @@
-
 <div ui-layout class="layout-with-headers">
     <div ui-layout-container >
         <div ui-layout="{flow : 'column'}" >
-            <div ui-layout-container  size="30%" class=" html-back" >
-                <div style="margin-left: auto;margin-right: auto;width: 100%" class="container-fluid">
+            <div ui-layout-container class=" html-back" >
 
-                    <div ng-if="!edit.testedImage">
-                        <div ng-if="edit.classifier.$isTrained && !edit.classifier.$isRetraining " class="alert alert-success">
-                            <strong>Trained!</strong> You can try to classify image in these categories
-                            <ul>
-                                <li ng-repeat="label in edit.classifier.labels">
-                                    {{label.labelName}}
-                                </li>
-                            </ul>
-                        </div>
-                        <div ng-if="!edit.classifier.$isTrained  && !edit.classifier.$isRetraining" class="alert alert-warning">
-                            <strong>Not trained!</strong> Your must first train you model :(
-                        </div>
-                        <div ng-if="edit.classifier.$isRetraining" class="alert alert-info">
-                            <strong>Training pending</strong> Training session in progress ...
-                        </div>
-                    </div>
-                    <div class="btn-group btn-group-justified">
-                        <div class="btn-group ">
-                            <label  style="padding-top: 10px"  class="btn btn-default btn-lg btn-block " ng-disabled="!edit.classifier.$isTrained || edit.classifier.$isRetraining">
-                                Select .jpeg <input type="file" ng-disabled="!edit.classifier.$isTrained || edit.classifier.$isRetraining"
-                                                                     hidden nv-file-select=""
-                                                                     style="visibility: hidden;position: fixed;" uploader="edit.predictionUploader" />
+                <uib-tabset active="edit.active" style="height: 100%">
 
-                            </label>
-                        </div>
-                        <div class="btn-group ">
-                            <button class="btn btn-info btn-lg btn-block"
-                                    ng-disabled="!edit.classifier.$isTrained || edit.classifier.$isRetraining"
-                                    ng-click="edit.startFaceTacking()">Face</button>
-                        </div>
-                    </div>
-                    <div class="container-fluid" style="padding-top: 10px" >
+                    <uib-tab  ng-repeat="compose in edit.currentProject.composes"
+                              index="$index"
+                              select="edit.refreshEditor()"
+                              heading="{{compose.name}}">
+                        <uib-tab-heading style="color:{{compose.color}}">
+                            {{compose.name}}
+                            <i class="glyphicon glyphicon glyphicon-pencil" ng-click="edit.changeName(compose,$event,$index)"></i>
 
-                        <div ng-if="!edit.classifier.$isRetraining && edit.classifier.$isTrained">
-                            <div class="demo-container" ng-show="edit.showFaceTracker && !edit.testedImage" style="height: 200px">
-                                <video id="video-reco" class="track-video" width="300" height="200" preload autoplay loop muted></video>
-                                <canvas id="canvas-reco"  class="track-canvas" width="300" height="200"></canvas>
-                                <i style="width: 300px; color: white; margin-top: 10%; font-size: 6em; opacity: 0.7;" ng-if="edit.classifyFacePending" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
+                            <i class="glyphicon glyphicon-remove-sign" ng-click="edit.removeCompose(compose,$event,$index)"></i>
+                        </uib-tab-heading>
+                        <ui-codemirror ui-codemirror-opts="edit.editorOptions"
+                                       ng-model="compose.$yaml">
 
-                            </div>
-                            <div   class="col-md-12 col-xs-12"  ng-if="edit.testedImage" >
-                                <div style="position: absolute; width: 100%; height: 100%;" ng-if="!edit.testedImage.response">
-                                    <i style="width: 100%; color: white; margin-top: 10%; font-size: 6em; opacity: 0.7;" class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>
-                                </div>
-                                <div style="width: 100%;" class="imageToClassify" ng-thumb="{ file: edit.testedImage.file, height: 200 }"></div>
-                            </div>
-                            <div class="col-md-12 col-xs-12">
-                                <div class="container-fluid">
-                                    <ul class="list-group">
+                        </ui-codemirror>
 
-                                        <li class="list-group-item"  ng-repeat="result in edit.recoResult | orderBy:'score':true">
-                                            <h3 ng-if="$index == 0">{{result.label.labelName}} : score  ({{result.score}})</h3>
-                                            <p ng-if="$index != 0">{{result.label.labelName}} ({{result.score}})</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </uib-tab>
+                    <uib-tab disable="false"
+                             index="10000"
+                             select="edit.addNewCompose($event)">
+                        <uib-tab-heading>
+                            <i class="fa fa-plus" ></i>
+                        </uib-tab-heading>
+
+                    </uib-tab>
+                </uib-tabset>
+
+
+
+
             </div>
             <div ui-layout-container class="css-back" >
-                <div ng-if="edit.takePhoto" style="border-radius:10px; border:#ccc solid 1px;height: 230px; width: 100%; position: absolute; z-index: 999; background: white;">
-                    <i ng-click="edit.closePictureManger()" style="top: 0; right: 0; position: absolute; margin: 10px; cursor: pointer;" class="fa fa-times" aria-hidden="true"></i>
-                    <div class="container-fluid">
-                        <div class="col-xs-6 col-md-6">
-                            <div class="demo-frame" ng-init="edit.initTrackingJs()">
-                                <div class="demo-container">
-                                    <video id="video" class="track-video" width="300" height="200" preload autoplay loop muted></video>
-                                    <canvas id="canvas"  class="track-canvas" width="300" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-md-6">
-                            <h2>{{edit.cameraImageCount}}</h2>
-                            <button class="btn btn-success "  style="float:right;" ng-click="edit.startSendingCamera()">shoot</button>
+                <a href="" style="position: absolute;z-index:99;"
+                   ng-click=" edit.options.displayLinks = !edit.options.displayLinks">
+                    Display links between services ? {{edit.options.displayLinks}}
+                </a>
+                <a href="" style="position: absolute;z-index:99;top :15px"
+                   ng-click=" edit.options.displayDependsOn = !edit.options.displayDependsOn">
+                    Display depends on relations ? {{edit.options.displayDependsOn}}
+                </a>
+                <a href="" style="position: absolute;z-index:99;top :30px"
+                                ng-click=" edit.options.displayVolumes = !edit.options.displayVolumes">
+                                 Display volumes ? {{edit.options.displayVolumes}}
+                             </a>
+                <kr-vis-network json-compose="edit.currentProject.getCompose()"
+                                composes="edit.currentProject.composes"
+                                options="edit.options"
+                                height="100%" >
+                </kr-vis-network>
 
-                        </div>
-                    </div>
-                </div>
-                <div style="height: 230px; width: 100%; position: absolute; z-index: 99; background: white;">
-
-                    <div class="container-fluid">
-                        <h3>Classification labels</h3>
-
-                        <button class="btn btn-success" ng-click="edit.addLabel()">Add Label you wan to classify</button>
-                        or select an existing one
-                        <label>
-                            <select ng-model="edit.currentLabel" class="form-control"
-                                    ng-options="label.labelName  for label in edit.classifier.labels">
-                            </select>
-                        </label>
-
-
-                        <div ng-if="edit.currentLabel" >
-                            <h3>Selected label : {{edit.currentLabel.labelName}}</h3>
-
-                            <!--<div    ng-init="edit.refreshUploadUrl()"
-                                 class="well my-drop-zone col-md-6 col-xs-6"
-                                 nv-file-over="" uploader="edit.uploader"
-                                 multiple>
-
-                            </div>-->
-
-                            <div nv-file-drop=""   ng-init="edit.refreshUploadUrl()" uploader="edit.uploader" acce>
-                                <div nv-file-over="" uploader="edit.uploader"
-                                     over-class="another-file-over-class"
-                                     class="well my-drop-zone col-md-6 col-xs-6">
-                                    Drop your .jpg files here
-                                    <span ng-repeat="item in edit.uploader.queue">
-                                        <div class="progress" ng-if="item.isUploading"style="margin-bottom: 0;">
-
-                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                        </div>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class=" col-md-6 col-xs-6" >
-                                <button type="button" ng-click="edit.openPictureManager()" class="btn btn-default  btn-lg btn-block">Take pictures</button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-                <div style="height: 100%;width: 100%;overflow-x: hidden;overflow-y:auto;padding-top:230px;">
-
-                    <div masonry>
-                        <div class="masonry-brick" ng-repeat="imageFile in edit.currentLabel.imageFiles">
-                            <img style="margin: 5px;" ng-src="{{edit.getImageUrl(imageFile)}}" width="250" alt="A masonry brick">
-                        </div>
-                    </div>
-                </div>
             </div>
-
-
         </div>
     </div>
-    <div ui-layout-container size="30%" >
+    <div ui-layout-container >
+
         <div class="btn-group btn-group-justified" role="group" aria-label="...">
-
-
             <div class="btn-group" role="group">
-                <button type="button" ng-click="edit.trainClassifier()" class="btn btn-default  btn-lg btn-block">Train classifier</button>
+
+                <label  class="btn btn-primary btn-lg btn-block btn-file">
+                    Browse <input type="file" multiple accept=".yml"  kr-file-select get-file="edit.currentProject.loadAllLocally(files)" class="hidden">
+
+                </label>
             </div>
 
+            <div class="btn-group" role="group">
+                <button type="button" ng-click="edit.currentProject.$save()" class="btn btn-default  btn-lg btn-block">Save</button>
+            </div>
+
+            <div class="btn-group" role="group">
+
+                <button   ng-click="edit.downloadYaml()" class="btn btn-success btn-lg btn-block ">
+                    Download
+
+                </button>
+            </div>
+            <a id="downloadAnchorElem{{$index}}"
+               ng-repeat="compose in edit.currentProject.composes"
+               href="data:text/yaml;charset=utf-8,{{compose.$yaml | encodeURI}}"
+               download="{{compose.name}}"
+               style="display:none"></a>
         </div>
 
         <ul class="list-group">
-            <li ng-repeat="log in edit.retrainLogs | orderBy:'dateTime':true" class="list-group-item ">{{log.text}}</li>
+            <li ng-repeat="log in edit.logService.history | orderBy:'date':true" class="list-group-item list-group-item-{{log.type}}">{{log.date | date:'medium'}} {{log.message}}</li>
         </ul>
 
     </div>
 
 </div>
+
+

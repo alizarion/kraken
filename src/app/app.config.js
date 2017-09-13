@@ -1,11 +1,7 @@
 /**
  * Main module
  */
-angular.module('classifier')
-    .constant('CONFIG',{
-        API_URL: "localhost:8080/classifier"
-    })
-    .config( [
+angular.module('kraken').config( [
         '$compileProvider',
         function( $compileProvider )
         {

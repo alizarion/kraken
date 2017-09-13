@@ -53,4 +53,4 @@
     module.factory("LocalFileReader",
                    ["$q", "$log", '$rootScope', LocalFileReader]);
  
-}(angular.module("classifier")));
+}(angular.module("kraken")));
