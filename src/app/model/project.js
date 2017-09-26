@@ -154,7 +154,7 @@ angular.module('kraken')
                     var found =false;
                     angular.forEach(projects,function(entry,index){
                         if(!found){
-                            if(entry.id === id){
+                            if((entry.id +"") === (id  +"")){
                                 foundProject = entry;
                                 foundIndex = index;
                             }
