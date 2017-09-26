@@ -1,9 +1,12 @@
 
 
 <div  ui-view class="fill-height">
-    <div class="container-fluid">
+    <div class="container-fluid" ng-init="home.projectService.refresh()">
+
+        <h1>Your projects</h1>
+        <hr>
         <div class="row">
-            <div class="col-sm-4 col-md-4"  ng-repeat="project in home.projectService.getLoadedProjects()">
+            <div class="col-sm-4 col-md-4"  ng-repeat="project in home.projectService.getLoadedProjects().yourProjects">
                 <div class="thumbnail" style="height: 230px">
                     <div class="caption">
                         <h2>
@@ -18,8 +21,8 @@
                             </li>
                         </ul>
                         <p>
-                            <a  class="btn btn-primary" ng-click="home.setCurrentProject(project)" role="button">Edit</a>
-                            <a  class="btn btn-danger" ng-click="project.$drop();home.projectService.refresh()" role="button">Drop</a>
+                            <a  class="btn btn-primary"  ui-sref="home.edit({ projectId:project.id ,collection:'kraken_projects' })"  role="button">Open</a>
+                            <a  class="btn btn-danger" ng-click="project.$drop('kraken_projects');home.projectService.refresh()" role="button">Drop</a>
 
                         </p>
                     </div>
@@ -35,5 +38,32 @@
             </div>
 
         </div>
+        <h1>Shared with you</h1>
+        <hr>
+        <div class="row">
+            <div class="col-sm-4 col-md-4"  ng-repeat="project in home.projectService.getLoadedProjects().sharedProjects">
+                <div class="thumbnail" style="height: 230px">
+                    <div class="caption">
+                        <h2>
+                            {{project.name}}
+                            <i style="font-size: 10px" class="glyphicon glyphicon-pencil" ng-click="home.updateProjectName(project,$event,$index)"></i>
+                        </h2>
+                        <ul style="height: 80px; overflow: hidden; text-overflow: ellipsis;">
+                            <li ng-repeat="compose in project.composes">
+                                {{compose.name}} :
+                                <b>services </b>
+                                <span ng-repeat="(key,value) in compose.json.services">{{key}}, </span>
+                            </li>
+                        </ul>
+                        <p>
+                            <a  class="btn btn-primary"  ui-sref="home.edit({ projectId:project.id,collection:'shared_projects' })"  role="button">Open</a>
+                            <a  class="btn btn-danger" ng-click="project.$drop('shared_projects');home.projectService.refresh()" role="button">Drop</a>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
