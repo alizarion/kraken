@@ -4,10 +4,14 @@ angular.module('kraken')
         'LocalFileReader',
         '$q',
         '$window',
+        'LogService',
+        'util',
         function(Compose,
                  LocalFileReader,
                  $q,
-                 $window){
+                 $window,
+                 LogService,
+                 util){
 
 
 
@@ -15,7 +19,7 @@ angular.module('kraken')
 
                 var self = this;
                 self.composes = [];
-                self.id = (new Date()).getTime();
+                self.id = util.UUID();
 
 
 
@@ -35,27 +39,39 @@ angular.module('kraken')
 
             }
 
-            _Project.prototype.$save = function(){
-                var savedProject = localStorage.getItem('kraken_projects');
+            _Project.prototype.$save = function(projectCollection){
+                var savedProject = localStorage.getItem(projectCollection);
                 var projects = [];
 
                 if (savedProject){
                     projects = angular.fromJson(savedProject);
                 }
                 var self = this;
+                var projectId = null;
+
+                if(self.fromShared){
+                    var extistingProject = _Project.$fromShared(self.fromShared);
+                    if(extistingProject.project){
+                        projectId = extistingProject.project.id;
+                    }
+                }
 
                 if(self.composes.length <=0){
                     self.composes.push(new Compose())
                 }
 
-                var existingProject  = _Project.$getById(this.id);
+
+                var existingProject  = _Project.$getById(projectId ? projectId : this.id,projectCollection);
                 if(existingProject.position>=0){
                     projects.splice(existingProject.position,1);
+                } else {
+                    projects.id = util.UUID();
                 }
 
                 projects.push(self);
 
-                localStorage.setItem('kraken_projects',angular.toJson(projects));
+                localStorage.setItem(projectCollection,angular.toJson(projects));
+                LogService.info('Saved in your projects')
             };
 
             _Project.prototype.$refreshYamlFromJson =function(){
@@ -68,8 +84,36 @@ angular.module('kraken')
 
             };
 
-            _Project.$loadAll = function(){
+            _Project.$fromShared = function(id){
                 var savedProject = localStorage.getItem('kraken_projects');
+                var projects = [];
+
+                var foundProject = null;
+                var foundIndex = -1;
+
+                if (savedProject){
+                    projects = angular.fromJson(savedProject);
+                    var found =false;
+                    angular.forEach(projects,function(entry,index){
+                        if(!found){
+                            if(entry.fromShared === id){
+                                foundProject = entry;
+                                foundIndex = index;
+                            }
+                        }
+                    });
+                }
+                if(!foundProject){
+                    console.warn('project with id ' + id+ 'not found')
+                }
+                return {
+                    project : foundProject,
+                    position: foundIndex
+                }
+            };
+
+            _Project.$loadAll = function(collectionName){
+                var savedProject = localStorage.getItem(collectionName);
                 var jsonProject = [];
                 var projects = [];
                 if (savedProject){
@@ -98,8 +142,8 @@ angular.module('kraken')
                 return result;
             };
 
-            _Project.$getById = function(id){
-                var savedProject = localStorage.getItem('kraken_projects');
+            _Project.$getById = function(id,collection){
+                var savedProject = localStorage.getItem(collection);
                 var projects = [];
 
                 var foundProject = null;
@@ -127,21 +171,21 @@ angular.module('kraken')
 
             };
 
-            _Project.prototype.$drop = function(){
+            _Project.prototype.$drop = function(collection){
 
                 var deleteProject = $window.confirm('Are you sure you want to delete this project?');
                 if(deleteProject){
-                    var savedProject = localStorage.getItem('kraken_projects');
+                    var savedProject = localStorage.getItem(collection);
                     var projects = [];
 
                     if (savedProject){
                         projects = angular.fromJson(savedProject);
                     }
-                    var projectPosition = _Project.$getById(this.id);
+                    var projectPosition = _Project.$getById(this.id,collection);
                     if(projectPosition.position>=0){
                         projects.splice(projectPosition.position,1);
                     }
-                    localStorage.setItem('kraken_projects',angular.toJson(projects));
+                    localStorage.setItem(collection,angular.toJson(projects));
                 }
 
             };

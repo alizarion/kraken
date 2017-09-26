@@ -26,6 +26,8 @@
     "codemirror": "^5.23.0",
     "font-awesome": "^4.7.0",
     "js-yaml": "^3.7.0",
+    "lzma": "^2.3.2",
+    "ng-clipboard": "^1.0.0",
     "vis": "^4.18.0"
   },
   "devDependencies": {

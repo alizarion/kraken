@@ -1,6 +1,6 @@
 angular.module('kraken').factory('Compose',[
-    '$rootScope',
-    function($rootScope){
+    '$rootScope','util',
+    function($rootScope,util){
 
 
         _Compose.prototype.$reloadFromYaml  = function(){

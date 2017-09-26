@@ -11,6 +11,7 @@ angular.module('kraken').config(
             $stateProvider
                 .state('home',{
                     url: "/home",
+                    cache: false,
                     controller: 'HomeCtrl',
                     templateUrl: 'app/components/home/home.html',
                     controllerAs: 'home',
@@ -22,7 +23,7 @@ angular.module('kraken').config(
 
                 .state({
                     name :'home.edit',
-                    url: '/edit',
+                    url: '/edit/:projectId?project&collection',
                     templateUrl: 'app/components/edit/edit.html',
                     controller: 'EditCtrl',
                     controllerAs: 'edit',

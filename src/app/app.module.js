@@ -6,18 +6,20 @@ angular.module('kraken',
         'kraken.codemirror',
         'ui.layout',
         'ui.bootstrap',
+        'ng-clipboard',
         'ui.router',
         'ncy-angular-breadcrumb'
     ]
 )
-    .config( [
-        '$compileProvider','$locationProvider',
+    .config([
+        '$compileProvider','$locationProvider','$qProvider',
         function(
-            $compileProvider,$locationProvider
+            $compileProvider,$locationProvider,$qProvider
         )
         {
             $locationProvider.html5Mode(false);
             $locationProvider.hashPrefix('');
+            $qProvider.errorOnUnhandledRejections(false);
             $compileProvider
                 .aHrefSanitizationWhitelist(/^\s*(https?|data|mailto|chrome-extension):/);
         }

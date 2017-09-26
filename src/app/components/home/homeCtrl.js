@@ -17,7 +17,6 @@ angular
             var self = this;
             self.projectService = ProjectService;
             self.projectService.refresh();
-
             self.setCurrentProject = function(project){
                 self.projectService.setCurrentProject(project);
                 $state.transitionTo('home.edit');
@@ -28,7 +27,7 @@ angular
                 var newName = prompt("Please enter the new name of you project", project.name);
                 if(newName){
                     project.name =  newName;
-                    project.$save();
+                    project.$save('kraken_projects');
                 }
                 event.preventDefault();
             };
@@ -66,7 +65,7 @@ angular
                             $scope.project = new Project();
 
                             $scope.ok = function() {
-                                $scope.project.$save();
+                                $scope.project.$save('kraken_projects');
                                 ProjectService.refresh();
                                 $uibModalInstance.close();
                             };

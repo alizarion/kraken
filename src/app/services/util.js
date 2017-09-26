@@ -65,6 +65,16 @@ angular
 
     }
 
+    function _guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    }
+
     function _linkToVolume(service,volume,path){
         return {
             id: 'service-' + service + '-to-volume-' + volume,
@@ -356,7 +366,8 @@ angular
 
     return {
 
-        composeToVis :_getNetworkModel
+        composeToVis :_getNetworkModel,
+        UUID: _guid
 
     }
 }]);

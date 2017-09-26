@@ -3,11 +3,12 @@ angular.module('kraken').service('ProjectService',['Project',function(Project){
     var self = this;
 
     self.refresh = function(){
-        self.loadedProjects = Project.$loadAll();
+        self.yourProjects = Project.$loadAll('kraken_projects');
+        self.sharedProjects =  Project.$loadAll('shared_projects');
     };
 
     self.getLoadedProjects = function(){
-        return self.loadedProjects;
+        return self;
     };
     self.getCurrentProject = function(){
         return self.currentProject;
